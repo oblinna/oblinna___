@@ -647,6 +647,21 @@ document.getElementById('lightbox').addEventListener('click', function(e){
 document.addEventListener('keydown', function(e){
   if(e.key === 'Escape'){ closeLightbox(); }
 });
+
+// Con fotos tan pesadas, la pagina puede seguir acomodandose (layout shift)
+// despues del salto automatico al ancla, dejando al usuario mas arriba de
+// lo esperado. Volvemos a saltar al hash una vez que todo termino de cargar
+// y de nuevo un instante despues, por si alguna imagen tardo mas.
+function jumpToHash(){
+  if(!location.hash) return;
+  var el = document.querySelector(location.hash);
+  if(el) el.scrollIntoView({behavior:'auto', block:'start'});
+}
+window.addEventListener('load', function(){
+  jumpToHash();
+  setTimeout(jumpToHash, 350);
+  setTimeout(jumpToHash, 900);
+});
 </script>
 </body>
 </html>
